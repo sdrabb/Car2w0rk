@@ -43,9 +43,18 @@ class ViewStatState extends State<ViewStatScreenWidget> {
       itemBuilder: (context, index) => Card(
         child: ListTile(
           leading: null,
-          title: Text(DateTime.parse(_trips[index].date).day.toString() + '-' +
-                      DateTime.parse(_trips[index].date).month.toString() + '-' +
-                      DateTime.parse(_trips[index].date).year.toString() ),
+          title: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(text: DateTime.parse(_trips[index].date).day.toString() + '-' +
+                    DateTime.parse(_trips[index].date).month.toString() + '-' +
+                    DateTime.parse(_trips[index].date).year.toString() + ' '
+                    ,style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(text: _trips[index].id, style: TextStyle(fontWeight: FontWeight.normal)),
+              ],
+            ),
+          )
+          ,
           subtitle: Text.rich(
             TextSpan(
               children: [
@@ -85,7 +94,7 @@ class Trip {
   int retcode;
   String retDes;
 
-  int id;
+  String id;
   String driver;
   String p1;
   String p2;
@@ -95,12 +104,12 @@ class Trip {
 
   Trip.fromJSON(Map<String, dynamic> jsonMap) :
 
-        id = jsonMap['id'],
+        id = jsonMap['_id'],
         driver = jsonMap['driver'],
-        p1 = jsonMap['p1'],
-        p2 = jsonMap['p2'],
-        p3 = jsonMap['p3'],
-        p4 = jsonMap['p4'],
+        p1 = jsonMap['passenger1'],
+        p2 = jsonMap['passenger2'],
+        p3 = jsonMap['passenger3'],
+        p4 = jsonMap['passenger4'],
         date = jsonMap['date'];
 }
 

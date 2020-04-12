@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddTripScreenWidget extends StatefulWidget {
   AddTripScreenWidget({this.value: 1.0});
@@ -186,7 +188,8 @@ class AddTripState extends State<AddTripScreenWidget> {
           ]
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _displaySnackBar(context),
+//        onPressed: () => _displaySnackBar(context),
+        onPressed: () => saveTrip(context),
         label: Text('Save your trip'),
         icon: Icon(Icons.done),
         backgroundColor: Colors.pink,
@@ -206,9 +209,35 @@ class AddTripState extends State<AddTripScreenWidget> {
       });
   }
 
-  _displaySnackBar(BuildContext context) {
-    final snackBar = SnackBar(content: Text('Are you talkin\' to me?'));
-    _scaffoldKey.currentState.showSnackBar(snackBar);
+  Future<Null> saveTrip(BuildContext context) async {
+
+    var reqBody = {};
+    reqBody['driver'] = dropdownDriverValue;
+    reqBody['passenger1'] = dropdownPassenger1Value;
+    reqBody['passenger2'] = dropdownPassenger2Value;
+    reqBody['passenger3'] = dropdownPassenger3Value;
+    reqBody['passenger4'] = dropdownPassenger4Value;
+    reqBody['date'] = selectedDate.toString();
+
+    final http.Response response = await http.post(
+      'http://ec2-3-8-39-157.eu-west-2.compute.amazonaws.com:3000/saveTrip',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(reqBody)
+    );
+
+    final tripSavedOKSnackBar = SnackBar(content: Text('trip saved!'));
+    final tripSavedERRORSnackBar = SnackBar(content: Text('error while saving'));
+
+//    print(response.statusCode );
+//    print(response.body);
+    if(response.statusCode == 200) {
+      _scaffoldKey.currentState.showSnackBar(tripSavedOKSnackBar);
+    }
+    else{
+      _scaffoldKey.currentState.showSnackBar(tripSavedERRORSnackBar);
+    }
   }
 
 }
