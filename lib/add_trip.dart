@@ -18,11 +18,11 @@ class AddTripState extends State<AddTripScreenWidget> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime selectedDate = DateTime.now();
-  String dropdownDriverValue = 'Andrea';
-  String dropdownPassenger1Value = 'Andrea';
-  String dropdownPassenger2Value = 'Andrea';
-  String dropdownPassenger3Value = 'Andrea';
-  String dropdownPassenger4Value = 'Andrea';
+  String dropdownDriverValue = '';
+  String dropdownPassenger1Value = '';
+  String dropdownPassenger2Value = '';
+  String dropdownPassenger3Value = '';
+  String dropdownPassenger4Value = '';
 
 
   @override
@@ -30,6 +30,7 @@ class AddTripState extends State<AddTripScreenWidget> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
+        centerTitle: true,
         title: const Text('Add Trip'),
       ),
       body: new ListView(
@@ -50,7 +51,7 @@ class AddTripState extends State<AddTripScreenWidget> {
                       dropdownDriverValue = newValue;
                     });
                   },
-                  items: <String>['Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
+                  items: <String>['', 'Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -78,7 +79,7 @@ class AddTripState extends State<AddTripScreenWidget> {
                       dropdownPassenger1Value = newValue;
                     });
                   },
-                  items: <String>['Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
+                  items: <String>['', 'Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -106,7 +107,7 @@ class AddTripState extends State<AddTripScreenWidget> {
                       dropdownPassenger2Value = newValue;
                     });
                   },
-                  items: <String>['Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
+                  items: <String>['', 'Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -134,7 +135,7 @@ class AddTripState extends State<AddTripScreenWidget> {
                       dropdownPassenger3Value = newValue;
                     });
                   },
-                  items: <String>['Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
+                  items: <String>['', 'Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -162,7 +163,7 @@ class AddTripState extends State<AddTripScreenWidget> {
                       dropdownPassenger4Value = newValue;
                     });
                   },
-                  items: <String>['Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
+                  items: <String>['', 'Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,

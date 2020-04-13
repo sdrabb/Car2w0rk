@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:car2work/add_trip.dart';
 import 'package:car2work/view_stat.dart';
-
+import 'package:car2work/credits.dart';
 
 void main() {
   runApp(new NavigationExampleApp());
@@ -75,11 +75,22 @@ class FirstScreenState extends State<FirstScreenWidget> {
     ) ?? 1.0;
   }
 
+  _navigateCredits() async {
+
+    _value = await Navigator.of(context).push(
+
+        new MaterialPageRoute(
+            builder: (context) => new CreditscreenWidget(value: _value)
+        )
+    ) ?? 1.0;
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+        centerTitle: true,
         title: const Text('Car2Work'),
       ),
       body: new ListView(
@@ -113,6 +124,20 @@ class FirstScreenState extends State<FirstScreenWidget> {
             },
           ),
         ),
+        Card(
+          child: ListTile(
+            leading: null,
+            title: Text('credits'),
+            trailing:  Icon(
+              Icons.assignment,
+              color: Colors.blue,
+              size: 36.0,
+            ),
+            onTap: () {
+              _navigateCredits();
+            },
+          ),
+        )
       ]
     )
   );
