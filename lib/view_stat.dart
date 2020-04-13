@@ -20,10 +20,37 @@ class ViewStatState extends State<ViewStatScreenWidget> {
   @override
   void initState() {
     super.initState();
-    listenForBeers();
+    listenForTrips();
   }
 
-  void listenForBeers() async {
+  _removeTrip(String id) async {
+
+    // set up PUT request arguments
+    String url = 'http://ec2-3-8-39-157.eu-west-2.compute.amazonaws.com:3000/removeTrip';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    String json = '{"id": "' + id + '"}';
+    // make PUT request
+    print(json);
+    http.Response response = await http.post(url, headers: headers, body: json);
+    // check the status code for the result
+    int statusCode = response.statusCode;
+    // this API passes back the updated item with the id added
+    String body = response.body;
+
+    final tripSavedERRORSnackBar = SnackBar(content: Text('error while removing'));
+
+    if(response.statusCode == 200) {
+      _trips.clear();
+      listenForTrips();
+    }
+    else{
+      _scaffoldKey.currentState.showSnackBar(tripSavedERRORSnackBar);
+    }
+  }
+
+
+
+  void listenForTrips() async {
 
     final Stream<Trip> stream = await getBeers();
 
@@ -66,19 +93,23 @@ class ViewStatState extends State<ViewStatScreenWidget> {
               ],
             ),
           ),
-          trailing:  DropdownButton(
-            value: null,
-            icon: Icon(Icons.airport_shuttle),
-            underline: Container(
-              height: 0,
-            ),
-            items: <String>['Andrea', 'Francesco', 'Daniele', 'Fabio', 'Alberto']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                  Icons.airport_shuttle,
+              ),
+              PopupMenuButton<int>(
+              onSelected: (context) => [_removeTrip(_trips[index].id)],
+                itemBuilder: (context) =>[
+                  PopupMenuItem(
+                    value: 1,
+                    child: Text("Remove"),
+                  ),
+                ],
+              ),
+            ],
           ),
           onTap: () {
             null;
