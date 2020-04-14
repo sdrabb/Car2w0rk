@@ -3,17 +3,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-class CreditscreenWidget extends StatefulWidget {
+
+class TeamManagerScreenWidget extends StatefulWidget {
   String _teamId;
-  CreditscreenWidget(this._teamId);
+  TeamManagerScreenWidget(this._teamId);
 
   @override
-  CreditsState createState() => new CreditsState(_teamId);
+  TeamManagerState createState() => new TeamManagerState(_teamId);
 }
 
-class CreditsState extends State<CreditscreenWidget> {
+class TeamManagerState extends State<TeamManagerScreenWidget> {
   String _teamId;
-  CreditsState(this._teamId);
+  TeamManagerState(this._teamId);
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Credit> _credits = <Credit>[];
@@ -21,25 +22,9 @@ class CreditsState extends State<CreditscreenWidget> {
   @override
   void initState() {
     super.initState();
-    listenForCredits();
+    print(this._teamId);
   }
 
-  void listenForCredits() async {
-    final Stream<Credit> stream = await getCredit();
-
-    stream.listen((Credit trip) =>
-        setState(() => _credits.add(trip))
-    );
-  }
-
-  Stream<int> timedCounter(Duration interval, [int maxCount]) async* {
-    int i = 0;
-    while (true) {
-      await Future.delayed(interval);
-      yield i++;
-      if (i == maxCount) break;
-    }
-  }
 
   _changeStyle(int credits){
     if(credits>0)
@@ -55,7 +40,7 @@ class CreditsState extends State<CreditscreenWidget> {
       Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Credits'),
+          title: Text('Team Manager'),
           bottom: PreferredSize(
               child: Text("Team id: " + _teamId,
                 style: new TextStyle(
@@ -115,6 +100,13 @@ class CreditsState extends State<CreditscreenWidget> {
                   },
                 ),
               ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+//        onPressed: () => _displaySnackBar(context),
+          onPressed: () => null,
+          label: Text('Save Team Settings'),
+          icon: Icon(Icons.done),
+          backgroundColor: Colors.pink,
         ),
       );
 }

@@ -4,17 +4,17 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AddTripScreenWidget extends StatefulWidget {
-  AddTripScreenWidget({this.value: 1.0});
-
-  final double value;
+  String _teamId;
+  AddTripScreenWidget(this._teamId);
 
   @override
-  AddTripState createState() => new AddTripState(value);
+  AddTripState createState() => new AddTripState(_teamId);
 }
 
 class AddTripState extends State<AddTripScreenWidget> {
-  AddTripState(this._value);
-  double _value;
+  String _teamId;
+  AddTripState(this._teamId);
+
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime selectedDate = DateTime.now();
@@ -32,6 +32,15 @@ class AddTripState extends State<AddTripScreenWidget> {
       appBar: new AppBar(
         centerTitle: true,
         title: const Text('Add Trip'),
+        bottom: PreferredSize(
+            child: Text("Team id: " + _teamId,
+              style: new TextStyle(
+                fontSize: 12.0,
+                color: Colors.yellowAccent,
+              ),
+            ),
+            preferredSize: null
+        ),
       ),
       body: new ListView(
           padding: const EdgeInsets.all(8),

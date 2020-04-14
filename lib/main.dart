@@ -1,5 +1,6 @@
 
 
+import 'package:car2work/team_manager.dart';
 import 'package:flutter/material.dart';
 
 
@@ -13,25 +14,6 @@ void main() {
 
 class NavigationExampleApp extends StatelessWidget {
 
-
-  Route<dynamic> _parseRoute(RouteSettings settings) {
-    // Split up the path
-    final List<String> path = settings.name.split('/');
-    // First entry should be empty as all paths should start with a '/'
-    assert(path[0] == '');
-    // Only valid path is '/second/<double value>'
-    if (path[1] == 'second' && path.length == 3) {
-      final value = double.parse(path[2]);
-
-      return new MaterialPageRoute<double>(
-        settings: settings,
-        builder: (BuildContext context) => new AddTripScreenWidget(value: value),
-      );
-    }
-    // The other paths we support are in the routes table.
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     // The MaterialApp's home is automatically set as the bottom of the navigation stack
@@ -42,7 +24,7 @@ class NavigationExampleApp extends StatelessWidget {
       ),
       home: new FirstScreenWidget(),
       // Manually parse routes requested through pushNamed() calls
-      onGenerateRoute: _parseRoute,
+      onGenerateRoute: null,
     );
   }
 }
@@ -53,14 +35,15 @@ class FirstScreenWidget extends StatefulWidget {
 }
 
 class FirstScreenState extends State<FirstScreenWidget> {
+  String _teamId = 'f26d60305dae929ef8640a75e70dd78ab809cfe9';
   var _value = 50.0;
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+
 
   _navigateToAddTrip() async {
 
     _value = await Navigator.of(context).push(
         new MaterialPageRoute(
-            builder: (context) => new AddTripScreenWidget(value: _value)
+            builder: (context) => new AddTripScreenWidget(_teamId)
         )
     ) ?? 1.0;
   }
@@ -70,7 +53,7 @@ class FirstScreenState extends State<FirstScreenWidget> {
     _value = await Navigator.of(context).push(
 
         new MaterialPageRoute(
-            builder: (context) => new ViewStatScreenWidget(value: _value)
+            builder: (context) => new ViewStatScreenWidget(_teamId)
         )
     ) ?? 1.0;
   }
@@ -80,10 +63,22 @@ class FirstScreenState extends State<FirstScreenWidget> {
     _value = await Navigator.of(context).push(
 
         new MaterialPageRoute(
-            builder: (context) => new CreditscreenWidget(value: _value)
+            builder: (context) => new CreditscreenWidget(_teamId)
         )
     ) ?? 1.0;
   }
+
+  _navigateToTeamManager() async {
+
+    _value = await Navigator.of(context).push(
+
+        new MaterialPageRoute(
+            builder: (context) => new TeamManagerScreenWidget(_teamId)
+        )
+    );
+  }
+
+
 
 
   @override
@@ -91,7 +86,16 @@ class FirstScreenState extends State<FirstScreenWidget> {
     return new Scaffold(
       appBar: new AppBar(
         centerTitle: true,
-        title: const Text('Car2Work'),
+        title: Text('Car2Work'),
+        bottom: PreferredSize(
+            child: Text("Team id: " + _teamId,
+              style: new TextStyle(
+                fontSize: 12.0,
+                color: Colors.yellowAccent,
+              ),
+            ),
+            preferredSize: null
+        ),
       ),
       body: new ListView(
       //padding: const EdgeInsets.all(8),
@@ -99,7 +103,7 @@ class FirstScreenState extends State<FirstScreenWidget> {
         Card(
           child: ListTile(
             leading: null,
-            title: Text('View stats'),
+            title: Text('View Stats'),
             trailing:  Icon(
               Icons.info_outline,
               color: Colors.blue,
@@ -113,7 +117,7 @@ class FirstScreenState extends State<FirstScreenWidget> {
         Card(
           child: ListTile(
             leading: null,
-            title: Text('Add trip'),
+            title: Text('Add Trip'),
             trailing:  Icon(
               Icons.directions_car,
               color: Colors.blue,
@@ -127,7 +131,7 @@ class FirstScreenState extends State<FirstScreenWidget> {
         Card(
           child: ListTile(
             leading: null,
-            title: Text('credits'),
+            title: Text('Credits'),
             trailing:  Icon(
               Icons.assignment,
               color: Colors.blue,
@@ -135,6 +139,20 @@ class FirstScreenState extends State<FirstScreenWidget> {
             ),
             onTap: () {
               _navigateCredits();
+            },
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: null,
+            title: Text('Team Manager'),
+            trailing:  Icon(
+              Icons.group,
+              color: Colors.blue,
+              size: 36.0,
+            ),
+            onTap: () {
+              _navigateToTeamManager();
             },
           ),
         )

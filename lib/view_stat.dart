@@ -3,17 +3,17 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ViewStatScreenWidget extends StatefulWidget {
-  ViewStatScreenWidget({this.value: 1.0});
-
-  final double value;
+  String _teamId;
+  ViewStatScreenWidget(this._teamId);
 
   @override
-  ViewStatState createState() => new ViewStatState(value);
+  ViewStatState createState() => new ViewStatState(_teamId);
 }
 
 class ViewStatState extends State<ViewStatScreenWidget> {
-  ViewStatState(this._value);
-  double _value;
+  String _teamId;
+  ViewStatState(this._teamId);
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Trip> _trips = <Trip>[];
 
@@ -64,6 +64,15 @@ class ViewStatState extends State<ViewStatScreenWidget> {
     appBar: AppBar(
       centerTitle: true,
       title: Text('Stats'),
+      bottom: PreferredSize(
+          child: Text("Team id: " + _teamId,
+            style: new TextStyle(
+              fontSize: 12.0,
+              color: Colors.yellowAccent,
+            ),
+          ),
+          preferredSize: null
+      ),
     ),
     body: ListView.builder(
       itemCount: _trips.length,
